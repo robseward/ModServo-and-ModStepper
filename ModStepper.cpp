@@ -1,4 +1,17 @@
 /*
+  ModStepper is a modification of Stepper.cpp that gives adds
+  non-blocking capability. That is, as long as you call update()
+  often, you don't have to wait for the stepper to complete its movement
+  before you can make other function calls.
+  
+  It should be backward compatible with Stepper.cpp code.
+  
+  Non-blocking code by Rob Seward in 2009, it's based off of Stepper.cpp version 0.4
+  
+  www.robseward.com
+
+  The original stepper.cpp v0.4 notes:
+  
   Stepper.cpp - - Stepper library for Wiring/Arduino - Version 0.4
   
   Original library     (0.1) by Tom Igoe.
@@ -40,6 +53,7 @@
   The circuits can be found at 
  
 http://www.arduino.cc/en/Tutorial/Stepper
+
  
 */
 
@@ -130,7 +144,7 @@ void ModStepper::step(int steps_to_move)
 }
 
 void ModStepper::setAction(int steps_to_move){
-	this->seq_steps_left = abs(steps_to_move);  // how many steps to take
+  this->seq_steps_left = abs(steps_to_move);  // how many steps to take
   determineDirection(steps_to_move);
 }
 

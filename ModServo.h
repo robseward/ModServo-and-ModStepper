@@ -1,4 +1,13 @@
+/*
+  ModServo is based on the Servo.cpp library that was included with arduino in the summer of 2009.
+  It works identically to Servo.cpp except that you can set the speed of the servo.
+  
+  To set the speed, call the setSpeed() function
 
+  Modifications to the Servo.cpp were made in 2009 by Rob Seward.
+
+  www.robseward.com
+*/
 
 // ensure this library description is only included once
 #ifndef ModServo_h
