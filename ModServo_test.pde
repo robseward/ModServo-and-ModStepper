@@ -13,14 +13,11 @@
 // create an instance of the stepper class, specifying
 // the number of steps of the motor and the pins it's
 // attached to
-ModStepper stepper1(STEPS, 6, 7, 8, 9);
-ModStepper stepper2(STEPS, 2, 3, 4, 5);
+ModStepper stepper(STEPS, 6, 7, 8, 9);
 
-// the previous reading from the analog input
-int previous = 0;
+ModServo servo;
 
-ModServo servos[NUM_SERVOS];
-
+int servoPin = 14;
 
 int angle = 0;
 
@@ -28,50 +25,36 @@ void setup()
 {
   Serial.begin(9600);
   delay(1000);
-  servos[0].attach(14);
-  servos[1].attach(12);
-  servos[2].attach(11);
-  servos[3].attach(10);
-  servos[4].attach(15);
-
-  int i;
-  for(i=0; i<NUM_SERVOS; i++){
-    servos[i].setSpeed(20); 
-  }
-
-  stepper1.setSpeed(30);
-  stepper2.setSpeed(30);
-
+  
+  servo.attach(servoPin);
+  servo.setSpeed(20); 
+  
+  stepper.setSpeed(30);
 }
 
 void loop()
 {
-  int i;
-  
-  stepper1.update();
-  stepper2.update();  
 
-
-  // send data only when you receive data:
+  //Enter digits from 0-9. These will set the servo between a range of
+  //0 and 180 degrees. It will also move the stepper between 0 and 180 steps
   if (Serial.available() > 0) {
     // read the incoming byte:
     int incomingByte = Serial.read();
-    incomingByte -= 48;
-    angle = incomingByte * 20;
+    incomingByte -= 48;              //convert ascii digits into int digits 
+    angle = incomingByte * 20;       //multiply your digits so they are in the range of 0-180
 
-    Serial.print("I received: ");
+    Serial.print("angle: ");
     Serial.println(angle);
     
-    stepper1.setAction(angle);
-    stepper2.setAction(angle * -1);
-    for(i=0; i<NUM_SERVOS; i++){
-      servos[i].moveTo(angle); 
-    }
+    int steps = angle;
+    servo.moveTo(angle); 
+    
+    stepper.setAction(steps);
   }
 
-  for(i=0; i<NUM_SERVOS; i++){
-    servos[i].update(); 
-  }
+  stepper.update();
+  servo.update(); 
+  
 }
 
 
